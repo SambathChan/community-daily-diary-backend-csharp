@@ -7,6 +7,6 @@ public static class DtoMappingExtensions
 {
     public static PostDto AsDto(this Post post)
     {
-        return new PostDto(post.Id, post.Title, post.Body, post.Vote, post.CreatedAt);
+        return new PostDto(post.Id.ToString(), post.Title, post.Body, post.Vote, post.CreatedAt);
     }
 }

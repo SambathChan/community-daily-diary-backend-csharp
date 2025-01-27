@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace community_daily_diary_api.Dtos;
 
-public record PostDto(ObjectId Id, string Title, string Body, int Vote, DateTime CreatedAt);
+public record PostDto(string _id, string Title, string Body, int Vote, DateTime CreatedAt);
 public record CreatePostDto
     (
         [Required][MaxLength(250)] string Title, 
