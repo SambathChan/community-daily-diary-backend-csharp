@@ -2,8 +2,11 @@
 using community_daily_diary_api.Entities;
 using community_daily_diary_api.Extensions;
 using community_daily_diary_api.Repositories;
+using community_daily_diary_api.Settings;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -17,9 +20,12 @@ public class PostModule : IModule
 
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
+        var rateLimitOptions = app.ServiceProvider.GetRequiredService<IOptions<RateLimitSettings>>().Value;
+
         var group = app.MapGroup("posts")
             .WithOpenApi()
-            .WithTags("Posts");
+            .WithTags("Posts")
+            .RequireRateLimiting(rateLimitOptions.PolicyName);
 
         group.MapPost("", CreatePostAsync);
 
