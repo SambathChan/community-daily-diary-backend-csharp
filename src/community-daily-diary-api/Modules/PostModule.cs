@@ -3,7 +3,6 @@ using community_daily_diary_api.Entities;
 using community_daily_diary_api.Extensions;
 using community_daily_diary_api.Repositories;
 using community_daily_diary_api.Settings;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -16,6 +15,7 @@ namespace community_daily_diary_api.Modules;
 public class PostModule : IModule
 {
     private readonly FilterDefinitionBuilder<Post> filterBuilder = Builders<Post>.Filter;
+    private readonly SortDefinitionBuilder<Post> sortBuilder = Builders<Post>.Sort;
     private const string GetPostEndpointName = "GetPost";
 
     public void MapEndpoints(IEndpointRouteBuilder app)
@@ -78,8 +78,9 @@ public class PostModule : IModule
         [FromQuery] int count = 10)
     {
         FilterDefinition<Post> filter = QueryWithinSingleDay(date);
+        SortDefinition<Post> sort = sortBuilder.Descending(entity => entity.Vote);
 
-        var posts = await postsRepository.GetManyAsync(filter, offset, count);
+        var posts = await postsRepository.GetManyAsync(filter, sort, offset, count);
 
         return TypedResults.Ok(posts.Select(p => p.AsDto()));
     }
