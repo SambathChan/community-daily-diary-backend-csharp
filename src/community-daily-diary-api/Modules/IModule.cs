@@ -1,7 +1,6 @@
-﻿namespace community_daily_diary_api.Modules
+﻿namespace community_daily_diary_api.Modules;
+
+public interface IModule
 {
-    public interface IModule
-    {
-        void MapEndpoints(IEndpointRouteBuilder app);
-    }
+    void MapEndpoints(IEndpointRouteBuilder app);
 }
