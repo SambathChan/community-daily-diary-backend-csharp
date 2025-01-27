@@ -1,6 +1,6 @@
 @community_daily_diary_api_HostAddress = http://localhost:5123
 
-GET {{community_daily_diary_api_HostAddress}}/api/posts/6699749d26c9217bbe2e68e4
+GET {{community_daily_diary_api_HostAddress}}/api/posts/6797acbcf04dbce7a8113a9f
 Accept: application/json
 
 ###

@@ -1,7 +1,10 @@
 ﻿using community_daily_diary_api.Entities;
 using community_daily_diary_api.Repositories;
 using community_daily_diary_api.Settings;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace community_daily_diary_api.Extensions;
