@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace community_daily_diary_api.Dtos;
 
