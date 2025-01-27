@@ -1,0 +1,28 @@
+@community_daily_diary_api_HostAddress = http://localhost:5123
+
+GET {{community_daily_diary_api_HostAddress}}/api/posts/6699749d26c9217bbe2e68e4
+Accept: application/json
+
+###
+GET {{community_daily_diary_api_HostAddress}}/api/posts?date=01-27-2025
+Accept: application/json
+
+###
+POST {{community_daily_diary_api_HostAddress}}/api/posts
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Sample Title",
+  "body": "This is the body of the post.",
+  "vote": 0
+}
+
+###
+PATCH {{community_daily_diary_api_HostAddress}}/api/posts/6797acbcf04dbce7a8113a9f
+Accept: application/json
+Content-Type: application/json
+
+{
+  "voteUp": false
+}
