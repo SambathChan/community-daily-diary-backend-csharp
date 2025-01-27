@@ -30,9 +30,9 @@ public class MongoRepository<T> : IRepository<T> where T : IEntity
         await dbCollection.DeleteOneAsync(filter);
     }
 
-    public async Task<IReadOnlyCollection<T>> GetManyAsync(FilterDefinition<T> filter, int offset, int count)
+    public async Task<IReadOnlyCollection<T>> GetManyAsync(FilterDefinition<T> filter, SortDefinition<T> sort, int offset, int count)
     {
-        return await dbCollection.Find(filter ?? filterBuilder.Empty).Skip(offset).Limit(count).ToListAsync();
+        return await dbCollection.Find(filter ?? filterBuilder.Empty).Sort(sort).Skip(offset).Limit(count).ToListAsync();
     }
 
     public async Task<T> GetAsync(ObjectId id)
