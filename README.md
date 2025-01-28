@@ -7,4 +7,4 @@
 * Implemented the repository pattern instead of EF Core
 * Enabled CORS settings for only specific needs
 * Enabled sliding window rate limiter
-* Automatic build and deploy using GitHub to Azure App Services
+* Automatically build and deploy using GitHub Action to Azure App Services
