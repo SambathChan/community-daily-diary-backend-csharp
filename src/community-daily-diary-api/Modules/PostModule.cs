@@ -1,15 +1,15 @@
-﻿using community_daily_diary_api.Dtos;
-using community_daily_diary_api.Entities;
-using community_daily_diary_api.Extensions;
-using community_daily_diary_api.Repositories;
-using community_daily_diary_api.Settings;
+﻿using CommunityDailyDiary.Api.Dtos;
+using CommunityDailyDiary.Api.Entities;
+using CommunityDailyDiary.Api.Extensions;
+using CommunityDailyDiary.Api.Repositories;
+using CommunityDailyDiary.Api.Settings;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace community_daily_diary_api.Modules;
+namespace CommunityDailyDiary.Api.Modules;
 
 
 public class PostModule : IModule

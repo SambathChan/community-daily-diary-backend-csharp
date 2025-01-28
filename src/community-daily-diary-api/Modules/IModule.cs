@@ -1,4 +1,4 @@
-﻿namespace community_daily_diary_api.Modules;
+﻿namespace CommunityDailyDiary.Api.Modules;
 
 public interface IModule
 {

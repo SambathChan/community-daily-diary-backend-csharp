@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace community_daily_diary_api.Repositories;
+namespace CommunityDailyDiary.Api.Repositories;
 
 public interface IRepository<T>
 {

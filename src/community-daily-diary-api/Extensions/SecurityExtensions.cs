@@ -1,8 +1,8 @@
-﻿using community_daily_diary_api.Settings;
+﻿using CommunityDailyDiary.Api.Settings;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
-namespace community_daily_diary_api.Extensions
+namespace CommunityDailyDiary.Api.Extensions
 {
     public static class SecurityExtensions
     {

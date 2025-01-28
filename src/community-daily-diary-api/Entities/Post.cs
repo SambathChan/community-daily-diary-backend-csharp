@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace community_daily_diary_api.Entities;
+namespace CommunityDailyDiary.Api.Entities;
 
 [BsonIgnoreExtraElements]
 public class Post : IEntity

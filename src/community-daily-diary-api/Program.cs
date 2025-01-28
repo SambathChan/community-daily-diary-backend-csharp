@@ -1,8 +1,8 @@
-using community_daily_diary_api.Entities;
-using community_daily_diary_api.Extensions;
-using community_daily_diary_api.Settings;
+using CommunityDailyDiary.Api.Entities;
+using CommunityDailyDiary.Api.Extensions;
+using CommunityDailyDiary.Api.Settings;
 
-namespace community_daily_diary_api;
+namespace CommunityDailyDiary.Api;
 
 public class Program
 {

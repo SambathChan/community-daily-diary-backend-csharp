@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 
-namespace community_daily_diary_api.Entities;
+namespace CommunityDailyDiary.Api.Entities;
 
 public interface IEntity
 {

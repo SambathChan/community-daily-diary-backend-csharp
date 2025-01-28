@@ -1,14 +1,14 @@
-@community_daily_diary_api_HostAddress = http://localhost:5123
+@CommunityDailyDiary_Api_HostAddress = http://localhost:5123
 
-GET {{community_daily_diary_api_HostAddress}}/api/posts/6797acbcf04dbce7a8113a9f
+GET {{CommunityDailyDiary_Api_HostAddress}}/api/posts/6797acbcf04dbce7a8113a9f
 Accept: application/json
 
 ###
-GET {{community_daily_diary_api_HostAddress}}/api/posts?date=01-27-2025
+GET {{CommunityDailyDiary_Api_HostAddress}}/api/posts?date=01-27-2025
 Accept: application/json
 
 ###
-POST {{community_daily_diary_api_HostAddress}}/api/posts
+POST {{CommunityDailyDiary_Api_HostAddress}}/api/posts
 Accept: application/json
 Content-Type: application/json
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH {{community_daily_diary_api_HostAddress}}/api/posts/6797acbcf04dbce7a8113a9f
+PATCH {{CommunityDailyDiary_Api_HostAddress}}/api/posts/6797acbcf04dbce7a8113a9f
 Accept: application/json
 Content-Type: application/json
 

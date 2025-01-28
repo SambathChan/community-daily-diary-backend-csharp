@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace community_daily_diary_api.Dtos;
+namespace CommunityDailyDiary.Api.Dtos;
 
 public record PostDto(string _id, string Title, string Body, int Vote, DateTime CreatedAt);
 public record CreatePostDto

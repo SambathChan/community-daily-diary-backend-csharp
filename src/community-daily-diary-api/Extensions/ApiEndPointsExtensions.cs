@@ -1,7 +1,7 @@
-﻿using community_daily_diary_api.Modules;
+﻿using CommunityDailyDiary.Api.Modules;
 using System.Reflection;
 
-namespace community_daily_diary_api.Extensions;
+namespace CommunityDailyDiary.Api.Extensions;
 
 public static class ApiEndPointsExtensions
 {

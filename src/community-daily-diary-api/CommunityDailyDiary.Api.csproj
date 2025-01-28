@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>community_daily_diary_api</RootNamespace>
+    <RootNamespace>CommunityDailyDiary.Api</RootNamespace>
     <UserSecretsId>785f58b5-5e23-4be8-a5e9-b8ca6e4204f5</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>

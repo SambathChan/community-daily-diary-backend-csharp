@@ -1,4 +1,4 @@
-﻿namespace community_daily_diary_api.Settings
+﻿namespace CommunityDailyDiary.Api.Settings
 {
     public class RateLimitSettings
     {

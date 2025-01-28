@@ -1,7 +1,7 @@
-﻿using community_daily_diary_api.Dtos;
-using community_daily_diary_api.Entities;
+﻿using CommunityDailyDiary.Api.Dtos;
+using CommunityDailyDiary.Api.Entities;
 
-namespace community_daily_diary_api.Extensions;
+namespace CommunityDailyDiary.Api.Extensions;
 
 public static class DtoMappingExtensions
 {

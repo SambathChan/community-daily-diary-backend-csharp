@@ -1,8 +1,8 @@
-﻿using community_daily_diary_api.Entities;
+﻿using CommunityDailyDiary.Api.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace community_daily_diary_api.Repositories;
+namespace CommunityDailyDiary.Api.Repositories;
 
 public class MongoRepository<T> : IRepository<T> where T : IEntity
 {
