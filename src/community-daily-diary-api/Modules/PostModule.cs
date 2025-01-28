@@ -103,7 +103,8 @@ public class PostModule : IModule
 
     private FilterDefinition<Post> QueryWithinSingleDay(DateTime date)
     {
-        return filterBuilder.Gte(entity => entity.CreatedAt, date) &
-               filterBuilder.Lt(entity => entity.CreatedAt, date.AddDays(1));
+        var utcDate = date.ToUniversalTime();
+        return filterBuilder.Gte(entity => entity.CreatedAt, utcDate) &
+               filterBuilder.Lt(entity => entity.CreatedAt, utcDate.AddDays(1));
     }
 }
