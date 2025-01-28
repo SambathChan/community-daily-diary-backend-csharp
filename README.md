@@ -1,5 +1,7 @@
 # Community Daily Diary (Backend)
 
+A simple web API that I play around with .NET 9.
+
 ## About
 
 * Minimal API using ASP.NET Core 9.0
