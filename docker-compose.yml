@@ -1,0 +1,30 @@
+services:
+  communitydailydiary.api:
+    image: ${DOCKER_REGISTRY-}communitydailydiaryapi
+    build:
+      context: .
+      dockerfile: src/community-daily-diary-api/Dockerfile
+    ports:
+      - 8080:8080
+      - 8081:8081
+    depends_on:
+      communitydailydiary.database:
+        condition: service_healthy
+  communitydailydiary.database:
+    image: mongo:latest
+    container_name: communitydailydiary.database
+    environment:
+      MONGO_INITDB_DATABASE: CDD
+    ports: 
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  
+volumes:
+  mongodb-data:  
