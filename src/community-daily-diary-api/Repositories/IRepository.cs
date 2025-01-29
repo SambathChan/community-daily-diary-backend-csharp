@@ -3,12 +3,12 @@ using MongoDB.Driver;
 
 namespace CommunityDailyDiary.Api.Repositories;
 
-public interface IRepository<T>
+public interface IRepository<T, TKey>
 {
-    Task<IReadOnlyCollection<T>> GetManyAsync(FilterDefinition<T> filter, SortDefinition<T> sort, int offset, int count);
-    Task<T> GetAsync(ObjectId id);
+    Task<IReadOnlyCollection<T>> GetManyAsync(FilterDefinition<T> filterDefinition, SortDefinition<T> sortDefinition, int offset, int count);
+    Task<T> GetAsync(TKey id);
     Task CreateAsync(T entity);
-    Task UpdateAsync(ObjectId id, UpdateDefinition<T> updateDefinition);
+    Task UpdateAsync(TKey id, UpdateDefinition<T> updateDefinition);
     Task ReplaceAsync(T entity);
-    Task DeleteAsync(ObjectId id);
+    Task DeleteAsync(TKey id);
 }

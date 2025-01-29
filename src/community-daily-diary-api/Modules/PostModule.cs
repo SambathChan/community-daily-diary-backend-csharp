@@ -38,7 +38,7 @@ public class PostModule : IModule
     }
 
     private async Task<Results<Ok<int>, NotFound>> UpdatePostVoteAsync(
-        [FromServices] IRepository<Post> postsRepository,
+        [FromServices] IRepository<Post, ObjectId> postsRepository,
         [FromRoute] ObjectId id,
         [FromBody] UpdatePostVoteDto updatePostVote)
     {
@@ -53,13 +53,15 @@ public class PostModule : IModule
 
         UpdateDefinition<Post> update = Builders<Post>.Update.Inc(post => post.Vote, value);
 
+        
+
         await postsRepository.UpdateAsync(id, update);
 
         return TypedResults.Ok(existingPost.Vote + value);
     }
 
     private async Task<Results<Ok<PostDto>, NotFound>> GetPostByIdAsync(
-        [FromServices] IRepository<Post> postsRepository,
+        [FromServices] IRepository<Post, ObjectId> postsRepository,
         [FromRoute] ObjectId id)
     {
         var post = await postsRepository.GetAsync(id);
@@ -72,7 +74,7 @@ public class PostModule : IModule
         return TypedResults.Ok(post.AsDto());
     }
 
-    private async Task<Ok<IEnumerable<PostDto>>> GetPostsAsync([FromServices] IRepository<Post> postsRepository,
+    private async Task<Ok<IEnumerable<PostDto>>> GetPostsAsync([FromServices] IRepository<Post, ObjectId> postsRepository,
         [FromQuery] DateTime date, 
         [FromQuery] int offset = 0, 
         [FromQuery] int count = 10)
@@ -86,7 +88,7 @@ public class PostModule : IModule
     }
 
     private async Task<IResult> CreatePostAsync(
-        [FromServices] IRepository<Post> postsRepository, 
+        [FromServices] IRepository<Post, ObjectId> postsRepository, 
         [FromBody] CreatePostDto createPostDto)
     {
         var post = new Post
