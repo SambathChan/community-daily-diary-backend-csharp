@@ -28,7 +28,7 @@ public static class RepositoryExtensions
         return services;
     }
 
-    public static IServiceCollection AddMongoRepository<T, TKey>(this IServiceCollection services, string collectionName) where T : IEntity
+    public static IServiceCollection AddMongoRepository<T>(this IServiceCollection services, string collectionName) where T : IEntity
     {
         services.AddSingleton<IRepository<T, ObjectId>, MongoRepository<T>>(serviceProvider =>
         {
