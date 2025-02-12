@@ -6,7 +6,7 @@ namespace CommunityDailyDiary.Api.Repositories;
 public interface IRepository<T, TKey>
 {
     Task<IReadOnlyCollection<T>> GetManyAsync(FilterDefinition<T> filterDefinition, SortDefinition<T> sortDefinition, int offset, int count);
-    Task<T> GetAsync(TKey id);
+    Task<T> GetAsync(TKey id, CancellationToken ct);
     Task CreateAsync(T entity);
     Task UpdateAsync(TKey id, UpdateDefinition<T> updateDefinition);
     Task ReplaceAsync(T entity);

@@ -5,6 +5,7 @@ using CommunityDailyDiary.Api.Repositories;
 using CommunityDailyDiary.Api.Settings;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -39,21 +40,24 @@ public class PostModule : IModule
 
     private async Task<Results<Ok<int>, NotFound>> UpdatePostVoteAsync(
         [FromServices] IRepository<Post, ObjectId> postsRepository,
+        [FromServices] HybridCache cache,
         [FromRoute] ObjectId id,
-        [FromBody] UpdatePostVoteDto updatePostVote)
+        [FromBody] UpdatePostVoteDto updatePostVote,
+        CancellationToken ct)
     {
-        var existingPost = await postsRepository.GetAsync(id);
+        var existingPost = await cache.GetOrCreateAsync($"post-{id}", async token =>
+        {
+            return await postsRepository.GetAsync(id, token);
+        }, cancellationToken: ct);
 
-        if(existingPost is null)
+        if (existingPost is null)
         {
             return TypedResults.NotFound();
         }
 
         var value = updatePostVote.VoteUp ? 1 : -1;
 
-        UpdateDefinition<Post> update = Builders<Post>.Update.Inc(post => post.Vote, value);
-
-        
+        UpdateDefinition<Post> update = Builders<Post>.Update.Inc(post => post.Vote, value);        
 
         await postsRepository.UpdateAsync(id, update);
 
@@ -62,9 +66,14 @@ public class PostModule : IModule
 
     private async Task<Results<Ok<PostDto>, NotFound>> GetPostByIdAsync(
         [FromServices] IRepository<Post, ObjectId> postsRepository,
-        [FromRoute] ObjectId id)
+        [FromServices] HybridCache cache,
+        [FromRoute] ObjectId id,
+        CancellationToken ct)
     {
-        var post = await postsRepository.GetAsync(id);
+        var post = await cache.GetOrCreateAsync($"post-{id}", async token =>
+        {
+            return await postsRepository.GetAsync(id, token);
+        }, cancellationToken: ct);
 
         if(post is null)
         {

@@ -1,6 +1,7 @@
 using CommunityDailyDiary.Api.Entities;
 using CommunityDailyDiary.Api.Extensions;
 using CommunityDailyDiary.Api.Settings;
+using Microsoft.Extensions.Caching.Hybrid;
 
 namespace CommunityDailyDiary.Api;
 
@@ -16,6 +17,22 @@ public class Program
 
         builder.Services.AddMongo()
                         .AddMongoRepository<Post>("Posts");
+
+        //Try Hybrid Caching
+        builder.Services.AddDistributedMemoryCache();
+
+#pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        builder.Services.AddHybridCache(options =>
+        {
+            options.MaximumKeyLength = 256;
+
+            options.DefaultEntryOptions = new HybridCacheEntryOptions
+            {
+                Expiration = TimeSpan.FromMinutes(30),
+                LocalCacheExpiration = TimeSpan.FromMinutes(30)
+            };
+        });
+#pragma warning restore EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
         // Add services to the container.
         builder.Services.AddAuthorization();

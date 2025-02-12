@@ -36,10 +36,10 @@ public class MongoRepository<T> : IRepository<T, ObjectId> where T : IEntity
         return await dbCollection.Find(filterDefinition ?? filterBuilder.Empty).Sort(sortDefinition).Skip(offset).Limit(count).ToListAsync();
     }
 
-    public async Task<T> GetAsync(ObjectId id)
+    public async Task<T> GetAsync(ObjectId id, CancellationToken token)
     {
         FilterDefinition<T> filter = filterBuilder.Eq(entity => entity.Id, id);
-        return await dbCollection.Find(filter).FirstOrDefaultAsync();
+        return await dbCollection.Find(filter).FirstOrDefaultAsync(token);
     }
 
     public async Task UpdateAsync(ObjectId id, UpdateDefinition<T> updateDefinition)
