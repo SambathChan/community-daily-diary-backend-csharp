@@ -61,6 +61,7 @@ public class PostModule : IModule
         UpdateDefinition<Post> update = Builders<Post>.Update.Inc(post => post.Vote, value);        
 
         await postsRepository.UpdateAsync(id, update);
+        await cache.RemoveAsync($"post-{id}", ct);
 
         return TypedResults.Ok(existingPost.Vote + value);
     }
