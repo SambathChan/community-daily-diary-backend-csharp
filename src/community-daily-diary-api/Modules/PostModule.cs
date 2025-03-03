@@ -47,7 +47,8 @@ public class PostModule : IModule
     {
         var existingPost = await cache.GetOrCreateAsync($"post-{id}", async token =>
         {
-            return await postsRepository.GetAsync(id, token);
+            var postDb = await postsRepository.GetAsync(id, token);
+            return postDb.AsDto();
         }, cancellationToken: ct);
 
         if (existingPost is null)
@@ -72,7 +73,8 @@ public class PostModule : IModule
     {
         var post = await cache.GetOrCreateAsync($"post-{id}", async token =>
         {
-            return await postsRepository.GetAsync(id, token);
+            var postDb = await postsRepository.GetAsync(id, token);
+            return postDb.AsDto();
         }, cancellationToken: ct);
 
         if(post is null)
@@ -80,7 +82,7 @@ public class PostModule : IModule
             return TypedResults.NotFound();
         }
 
-        return TypedResults.Ok(post.AsDto());
+        return TypedResults.Ok(post);
     }
 
     private async Task<Ok<IEnumerable<PostDto>>> GetPostsAsync([FromServices] IRepository<Post, ObjectId> postsRepository,
