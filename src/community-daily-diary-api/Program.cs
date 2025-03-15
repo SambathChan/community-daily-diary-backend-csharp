@@ -16,7 +16,7 @@ public class Program
                         .EnableRateLimit();
 
         builder.Services.AddMongo()
-                        .AddMongoRepository<Post>("Posts");
+                        .AddMongoRepository<Post>();
 
         //Try Hybrid Caching
         builder.Services.AddDistributedMemoryCache();

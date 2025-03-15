@@ -14,8 +14,8 @@ namespace CommunityDailyDiary.Api.Extensions
                                   policy =>
                                   {
                                       policy.WithOrigins(corsSettings.Origins)
-                                            .WithMethods("GET", "POST", "PATCH")
-                                            .WithHeaders("content-type");
+                                            .WithMethods(corsSettings.Methods)
+                                            .WithHeaders(corsSettings.Headers);
                                   });
             });
 

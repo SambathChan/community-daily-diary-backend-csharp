@@ -1,6 +1,7 @@
 ﻿using CommunityDailyDiary.Api.Entities;
 using CommunityDailyDiary.Api.Repositories;
 using CommunityDailyDiary.Api.Settings;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -28,12 +29,14 @@ public static class RepositoryExtensions
         return services;
     }
 
-    public static IServiceCollection AddMongoRepository<T>(this IServiceCollection services, string collectionName) where T : IEntity
-    {
+    public static IServiceCollection AddMongoRepository<T>(this IServiceCollection services) where T : IEntity
+    {                
         services.AddSingleton<IRepository<T, ObjectId>, MongoRepository<T>>(serviceProvider =>
         {
+            var configuration = serviceProvider.GetService<IConfiguration>();
+            var mongoDbSettings = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
             var database = serviceProvider.GetService<IMongoDatabase>();
-            return new MongoRepository<T>(database, collectionName);
+            return new MongoRepository<T>(database, mongoDbSettings.CollectionName);
         });
         return services;
     }
