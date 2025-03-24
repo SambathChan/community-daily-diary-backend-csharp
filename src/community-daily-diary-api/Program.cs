@@ -18,10 +18,9 @@ public class Program
         builder.Services.AddMongo()
                         .AddMongoRepository<Post>();
 
-        //Try Hybrid Caching
         builder.Services.AddDistributedMemoryCache();
 
-#pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable EXTEXP0018
         builder.Services.AddHybridCache(options =>
         {
             options.MaximumKeyLength = 256;
@@ -32,30 +31,22 @@ public class Program
                 LocalCacheExpiration = TimeSpan.FromMinutes(30)
             };
         });
-#pragma warning restore EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning restore EXTEXP0018
 
-        // Add services to the container.
         builder.Services.AddAuthorization();
-
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
         }
 
         app.UseHttpsRedirection();
-
         app.UseCors(corsSettings.PolicyName);
-
         app.UseRateLimiter();
-
         app.UseAuthorization();
-
         app.UseMinimalApiEndPoints();
 
         app.Run();
