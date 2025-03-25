@@ -1,6 +1,7 @@
 # Community Daily Diary (Backend)
-
 A simple web API that I play around with .NET 9.
+
+[![Build and deploy ASP.Net Core app to Azure Web App - cdd-api](https://github.com/SambathChan/community-daily-diary-backend-csharp/actions/workflows/main_cdd-api.yml/badge.svg)](https://github.com/SambathChan/community-daily-diary-backend-csharp/actions/workflows/main_cdd-api.yml)
 
 ## About
 
