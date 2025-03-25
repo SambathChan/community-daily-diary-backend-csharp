@@ -1,20 +1,15 @@
 using CommunityDailyDiary.Api.Dtos;
-using CommunityDailyDiary.Api.Entities;
 using CommunityDailyDiary.Tests.Infrastructure;
-using Refit;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 
 namespace CommunityDailyDiary.Tests.Controllers;
 
-public class PostsValidationTests : IClassFixture<IntegrationTestFactory>
+public class PostsValidationTests : IntegrationTestBase
 {
-    private readonly HttpClient _client;
-
-    public PostsValidationTests(IntegrationTestFactory factory)
+    public PostsValidationTests(IntegrationTestWebAppFactory factory) : base(factory)
     {
-        _client = factory.CreateClient();
     }
 
     [Fact]

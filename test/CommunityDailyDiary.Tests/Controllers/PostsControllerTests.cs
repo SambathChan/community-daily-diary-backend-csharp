@@ -1,7 +1,5 @@
 using CommunityDailyDiary.Api.Dtos;
-using CommunityDailyDiary.Api.Entities;
 using CommunityDailyDiary.Tests.Infrastructure;
-using MongoDB.Bson;
 using Refit;
 using System.Net;
 using System.Net.Http.Json;
@@ -9,13 +7,10 @@ using Xunit;
 
 namespace CommunityDailyDiary.Tests.Controllers;
 
-public class PostsControllerTests : IClassFixture<IntegrationTestFactory>
+public class PostsControllerTests : IntegrationTestBase
 {
-    private readonly HttpClient _client;
-
-    public PostsControllerTests(IntegrationTestFactory factory)
+    public PostsControllerTests(IntegrationTestWebAppFactory factory) : base(factory)
     {
-        _client = factory.CreateClient();
     }
 
     [Fact]

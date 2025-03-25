@@ -10,17 +10,10 @@ using Xunit;
 
 namespace CommunityDailyDiary.Tests.Controllers;
 
-public class PostsCacheTests : IClassFixture<IntegrationTestFactory>
+public class PostsCacheTests : IntegrationTestBase
 {
-    private readonly IntegrationTestFactory _factory;
-    private readonly HttpClient _client;
-    private readonly IMongoDatabase _database;
-
-    public PostsCacheTests(IntegrationTestFactory factory)
+    public PostsCacheTests(IntegrationTestWebAppFactory factory) : base(factory)
     {
-        _factory = factory;
-        _database = _factory.Database;
-        _client = factory.CreateClient();
     }
 
     [Fact]

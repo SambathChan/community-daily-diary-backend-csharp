@@ -8,12 +8,11 @@ using Xunit;
 
 namespace CommunityDailyDiary.Tests.Infrastructure;
 
-public class IntegrationTestFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly MongoDbContainer _mongoDbContainer;
-    public IMongoDatabase Database => Services.GetRequiredService<IMongoDatabase>();
 
-    public IntegrationTestFactory()
+    public IntegrationTestWebAppFactory()
     {
         _mongoDbContainer = new MongoDbBuilder()
             .WithName($"test-mongo-{Guid.NewGuid()}")
