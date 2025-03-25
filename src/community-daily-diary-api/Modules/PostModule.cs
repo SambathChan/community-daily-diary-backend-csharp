@@ -28,7 +28,8 @@ public class PostModule : IModule
             .WithTags("Posts")
             .RequireRateLimiting(rateLimitOptions.PolicyName);
 
-        group.MapPost("", CreatePostAsync);
+        group.MapPost("", CreatePostAsync)
+            .WithParameterValidation();
 
         group.MapGet("", GetPostsAsync);
 
