@@ -39,7 +39,12 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 
     public override async ValueTask DisposeAsync()
     {
-        await _mongoDbContainer.DisposeAsync();
-        await base.DisposeAsync();
+        try
+        {
+            await base.DisposeAsync();
+        }finally
+        {
+            await _mongoDbContainer.DisposeAsync();
+        }
     }
 }
