@@ -1,4 +1,3 @@
-using CommunityDailyDiary.Api.Entities;
 using CommunityDailyDiary.Api.Extensions;
 using CommunityDailyDiary.Api.Settings;
 using Microsoft.Extensions.Caching.Hybrid;
@@ -16,8 +15,7 @@ public class Program
         builder.Services.EnableCors(corsSettings)
                         .EnableRateLimit();
 
-        builder.Services.AddMongo()
-                        .AddMongoRepository<Post>();
+        builder.Services.AddMongoDbEntities();
 
         builder.Services.AddDistributedMemoryCache();
 

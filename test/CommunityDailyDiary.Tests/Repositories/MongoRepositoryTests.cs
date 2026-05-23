@@ -1,5 +1,4 @@
 using CommunityDailyDiary.Api.Entities;
-using CommunityDailyDiary.Api.Repositories;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Xunit;
@@ -11,7 +10,7 @@ public class MongoRepositoryTests
 {
     private readonly Mock<IMongoCollection<Post>> _mockCollection;
     private readonly Mock<IMongoDatabase> _mockDb;
-    private readonly MongoRepository<Post> _repository;
+    private readonly MongoDbRepository<Post> _repository;
 
     public MongoRepositoryTests()
     {
@@ -20,7 +19,7 @@ public class MongoRepositoryTests
         _mockDb.Setup(db => db.GetCollection<Post>(It.IsAny<string>(), null))
                .Returns(_mockCollection.Object);
         
-        _repository = new MongoRepository<Post>(_mockDb.Object, "posts");
+        _repository = new MongoDbRepository<Post>(_mockDb.Object, "posts");
     }
 
     [Fact]

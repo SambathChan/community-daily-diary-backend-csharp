@@ -1,7 +1,6 @@
 ﻿using CommunityDailyDiary.Api.Dtos;
 using CommunityDailyDiary.Api.Entities;
 using CommunityDailyDiary.Api.Extensions;
-using CommunityDailyDiary.Api.Repositories;
 using CommunityDailyDiary.Api.Settings;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Entities;
 
 namespace CommunityDailyDiary.Api.Modules;
 
@@ -43,7 +43,7 @@ public class PostModule : IModule
     }
 
     private async Task<Results<Ok<int>, NotFound>> UpdatePostVoteAsync(
-        [FromServices] IRepository<Post, ObjectId> postsRepository,
+        [FromServices] DB db,
         [FromServices] HybridCache cache,
         [FromRoute] ObjectId id,
         [FromBody] UpdatePostVoteDto updatePostVote,
@@ -51,8 +51,8 @@ public class PostModule : IModule
     {
         var existingPost = await cache.GetOrCreateAsync($"post-{id}", async token =>
         {
-            var postDb = await postsRepository.GetAsync(id, token);
-            return postDb.AsDto();
+            var postDb = await db.Find<Post>().OneAsync(id, token);
+            return postDb;
         }, cancellationToken: ct);
 
         if (existingPost is null)
@@ -62,24 +62,26 @@ public class PostModule : IModule
 
         var value = updatePostVote.VoteUp ? 1 : -1;
 
-        UpdateDefinition<Post> update = Builders<Post>.Update.Inc(post => post.Vote, value);        
+        await db.Update<Post>()
+            .MatchID(id)
+            .Modify(p=>p.Vote, value)
+            .ExecuteAsync(ct);
 
-        await postsRepository.UpdateAsync(id, update);
         await cache.RemoveAsync($"post-{id}", ct);
 
         return TypedResults.Ok(existingPost.Vote + value);
     }
 
     private async Task<Results<Ok<PostDto>, NotFound>> GetPostByIdAsync(
-        [FromServices] IRepository<Post, ObjectId> postsRepository,
+        [FromServices] DB db,
         [FromServices] HybridCache cache,
         [FromRoute] ObjectId id,
         CancellationToken ct)
     {
         var post = await cache.GetOrCreateAsync($"post-{id}", async token =>
         {
-            var postDb = await postsRepository.GetAsync(id, token);
-            return postDb.AsDto();
+            var postDb = await db.Find<Post>().OneAsync(id, token);
+            return postDb;
         }, cancellationToken: ct);
 
         if(post is null)
@@ -87,24 +89,29 @@ public class PostModule : IModule
             return TypedResults.NotFound();
         }
 
-        return TypedResults.Ok(post);
+        return TypedResults.Ok(post.AsDto());
     }
 
-    private async Task<Ok<IEnumerable<PostDto>>> GetPostsAsync([FromServices] IRepository<Post, ObjectId> postsRepository,
+    private async Task<Ok<IEnumerable<PostDto>>> GetPostsAsync([FromServices] DB db,
         [FromQuery] DateTime date, 
         [FromQuery] int offset = 0, 
         [FromQuery] int count = 10)
     {
-        FilterDefinition<Post> filter = QueryWithinSingleDay(date);
-        SortDefinition<Post> sort = sortBuilder.Descending(entity => entity.Vote);
+        var startOfDay = date;
+        var endOfDay = startOfDay.AddDays(1);
 
-        var posts = await postsRepository.GetManyAsync(filter, sort, offset, count);
+        var posts = await db.Find<Post>()
+            .Match(p => p.CreatedAt >= startOfDay && p.CreatedAt < endOfDay)
+            .Sort(p=>p.Vote, Order.Descending)
+            .Skip(offset)
+            .Limit(count)
+            .ExecuteAsync();
 
         return TypedResults.Ok(posts.Select(p => p.AsDto()));
     }
 
     private async Task<IResult> CreatePostAsync(
-        [FromServices] IRepository<Post, ObjectId> postsRepository, 
+        [FromServices] DB db, 
         [FromBody] CreatePostDto createPostDto)
     {
         var post = new Post
@@ -114,17 +121,8 @@ public class PostModule : IModule
             CreatedAt = DateTime.UtcNow
         };
 
-        await postsRepository.CreateAsync(post);
+        await db.SaveAsync(post);
 
-        return TypedResults.CreatedAtRoute(post.AsDto(), GetPostEndpointName, new { id = post.Id });
-    }
-
-    private FilterDefinition<Post> QueryWithinSingleDay(DateTime date)
-    {
-        var startOfDay = date;
-        var endOfDay = startOfDay.AddDays(1);
-
-        return filterBuilder.Gte(entity => entity.CreatedAt, startOfDay) &
-               filterBuilder.Lt(entity => entity.CreatedAt, endOfDay);
+        return TypedResults.CreatedAtRoute(post.AsDto(), GetPostEndpointName, new { id = post.ID });
     }
 }

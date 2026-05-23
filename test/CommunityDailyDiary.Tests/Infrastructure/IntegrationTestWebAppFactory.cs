@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using MongoDB.Entities;
 using Testcontainers.MongoDb;
 using Xunit;
 
@@ -24,11 +25,11 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
     {
         builder.ConfigureServices(services =>
         {
-            services.AddSingleton(serviceProvider =>
-            {
-                var client = new MongoClient(_mongoDbContainer.GetConnectionString());
-                return client.GetDatabase("test-db");
-            });
+            services.AddSingleton(_ =>
+                DB.InitAsync(
+                    "test-db",
+                    MongoClientSettings.FromConnectionString(_mongoDbContainer.GetConnectionString())
+                ).GetAwaiter().GetResult());
         });
     }
 

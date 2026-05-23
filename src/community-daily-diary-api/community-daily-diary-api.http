@@ -1,4 +1,4 @@
-@CommunityDailyDiary_Api_HostAddress = http://localhost:8080
+@CommunityDailyDiary_Api_HostAddress = https://localhost:7184
 
 GET {{CommunityDailyDiary_Api_HostAddress}}/api/posts/6797acbcf04dbce7a8113a9f
 Accept: application/json
