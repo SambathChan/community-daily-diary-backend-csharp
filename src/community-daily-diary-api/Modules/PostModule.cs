@@ -24,12 +24,15 @@ public class PostModule : IModule
         var rateLimitOptions = app.ServiceProvider.GetRequiredService<IOptions<RateLimitSettings>>().Value;
 
         var group = app.MapGroup("posts")
-            .WithOpenApi()
+            .AddOpenApiOperationTransformer((operation, context, ct) =>
+            {
+                operation.Description = "Group of operations for managing posts.";
+                return Task.CompletedTask;
+            })
             .WithTags("Posts")
             .RequireRateLimiting(rateLimitOptions.PolicyName);
 
-        group.MapPost("", CreatePostAsync)
-            .WithParameterValidation();
+        group.MapPost("", CreatePostAsync);
 
         group.MapGet("", GetPostsAsync);
 

@@ -1,5 +1,6 @@
 ﻿using CommunityDailyDiary.Api.Settings;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Options;
 using System.Threading.RateLimiting;
 
 namespace CommunityDailyDiary.Api.Extensions
@@ -24,11 +25,12 @@ namespace CommunityDailyDiary.Api.Extensions
 
         public static IServiceCollection EnableRateLimit(this IServiceCollection services)
         {
-            var serviceProvider = services.BuildServiceProvider();
-            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            var rateLimitSettings = configuration.GetSection(nameof(RateLimitSettings)).Get<RateLimitSettings>();
+            services.AddOptions<RateLimitSettings>()
+                .BindConfiguration(nameof(RateLimitSettings))
+                .ValidateOnStart();
 
-            services.Configure<RateLimitSettings>(configuration.GetSection(nameof(RateLimitSettings)));
+            var serviceProvider = services.BuildServiceProvider();
+            var rateLimitSettings = serviceProvider.GetRequiredService<IOptions<RateLimitSettings>>().Value;
 
             services.AddRateLimiter(_ => _
                 .AddSlidingWindowLimiter(policyName: rateLimitSettings.PolicyName, options =>

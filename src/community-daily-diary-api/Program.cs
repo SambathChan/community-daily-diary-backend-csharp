@@ -10,6 +10,7 @@ public class Program
     public static void Main(string[] args)
     {        
         var builder = WebApplication.CreateBuilder(args);
+
         var corsSettings = builder.Configuration.GetSection(nameof(CorsSettings)).Get<CorsSettings>();
 
         builder.Services.EnableCors(corsSettings)
@@ -20,7 +21,6 @@ public class Program
 
         builder.Services.AddDistributedMemoryCache();
 
-#pragma warning disable EXTEXP0018
         builder.Services.AddHybridCache(options =>
         {
             options.MaximumKeyLength = 256;
@@ -31,8 +31,8 @@ public class Program
                 LocalCacheExpiration = TimeSpan.FromMinutes(30)
             };
         });
-#pragma warning restore EXTEXP0018
 
+        builder.Services.AddValidation();
         builder.Services.AddAuthorization();
         builder.Services.AddOpenApi();
 
