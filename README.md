@@ -16,3 +16,5 @@
 * Use Central Package Management
 * Set Package Source to Nuget
 * Microsoft.Testing.Platform as Test Runner
+* Switch from custom repository to MongoDB.Entities
+* Validate settings read from appsettings.json
